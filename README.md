@@ -10,7 +10,7 @@ Install from NPM:
 
 Annotate dependencies:
 
-```
+```javascript
 import {
     Factory,
     Inject,
@@ -34,7 +34,7 @@ class BarService {
 
 Get instance with injected dependencies:
 
-```
+```javascript
 var injector = new Injector();
 var barService: BarService = injector.get(BarService);
 barService.fooService.constructor === FooService; // true
@@ -42,7 +42,7 @@ barService.fooService.constructor === FooService; // true
 
 Provide alternative dependencies (for mocking, etc):
 
-```
+```javascript
 @Provides(FooService)
 class MockFooService {
     getThings() {
@@ -57,7 +57,7 @@ barService.fooService.constructor === MockFooService; // true
 
 Create a factory for a dependency:
 
-```
+```javascript
 class FooService {
     getThings() {
         // Get some things
