@@ -1,5 +1,5 @@
 {
-  "name": "@all4back/di",
+  "name": "jecht",
   "version": "1.0.0",
   "description": "Dependency injection for modern JS",
   "main": "index.js",
