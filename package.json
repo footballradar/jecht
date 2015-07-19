@@ -1,0 +1,26 @@
+{
+  "name": "@all4back/di",
+  "version": "1.0.0",
+  "description": "Dependency injection for modern JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "./bin/test | faucet",
+    "test-ci": "./bin/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:footballradar/di.git"
+  },
+  "keywords": [
+    "dependency-injection",
+    "injection",
+    "dependencies"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.6.23",
+    "faucet": "0.0.1",
+    "glob": "^5.0.14",
+    "tape": "^4.0.0"
+  }
+}

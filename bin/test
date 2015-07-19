@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var glob = require("glob");
+var path = require("path");
+
+require("babel/register")({
+    optional: [
+        "es7.decorators"
+    ]
+});
+
+glob("test/**/*.js", function(_, files) {
+    files.forEach(function(file) {
+        require(path.resolve(process.cwd(), file));
+    });
+});
