@@ -22,11 +22,15 @@
  */
 export function Inject(...tokens: Array<Function>): Function {
     return function(target: Function): void {
-        Object.defineProperty(target, "__inject", {
-            enumerable: false,
-            writable: false,
-            value: tokens
-        });
+        if (target.hasOwnProperty("__inject") && Array.isArray(target.__inject)) {
+            target.__inject.unshift(...tokens);
+        } else {
+            Object.defineProperty(target, "__inject", {
+                enumerable: false,
+                writable: false,
+                value: tokens
+            });
+        }
     }
 }
 

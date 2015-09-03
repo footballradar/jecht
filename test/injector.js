@@ -19,6 +19,30 @@ test("Basic injection", function(t) {
     injector.get(Bar);
 });
 
+test("Multiple annotations", function(t) {
+    t.plan(2);
+
+    class Foo {
+
+    }
+
+    class Bar {
+
+    }
+
+    @Inject(Foo)
+    @Inject(Bar)
+    class Baz {
+        constructor(foo: Foo, bar: Bar) {
+            t.ok(foo instanceof Foo);
+            t.ok(bar instanceof Bar);
+        }
+    }
+
+    var injector = new Injector();
+    injector.get(Baz);
+});
+
 test("Complex graph", function(t) {
     t.plan(6);
 
