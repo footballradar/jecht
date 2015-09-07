@@ -1,6 +1,6 @@
 {
   "name": "jecht",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Dependency injection for modern JS",
   "main": "dist/index.js",
   "scripts": {
