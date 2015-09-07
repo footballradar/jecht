@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:lipsmack/jecht.git"
+    "url": "git@github.com:footballradar/jecht.git"
   },
   "keywords": [
     "dependency-injection",
