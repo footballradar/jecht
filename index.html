@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Jecht by footballradar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Jecht</h1>
+      <h2 class="project-tagline">Simple dependency injection for modern JS</h2>
+      <a href="https://github.com/footballradar/jecht" class="btn">View on GitHub</a>
+      <a href="https://github.com/footballradar/jecht/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/footballradar/jecht/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="jecht---simple-di" class="anchor" href="#jecht---simple-di" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jecht - Simple DI</h1>
+
+<p><em>A basic dependency injection library for modern JS.</em></p>
+
+<h2>
+<a id="quickstart" class="anchor" href="#quickstart" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quickstart</h2>
+
+<p>Install from NPM:</p>
+
+<p><code>npm install jecht</code></p>
+
+<p>Annotate dependencies:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">import</span> {
+    Factory,
+    Inject,
+    Injector,
+    Provides
+} <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>jecht<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">class</span> <span class="pl-en">FooService</span> {
+    <span class="pl-en">getThings</span>() {
+        <span class="pl-c">// Get some things</span>
+    }
+}
+
+@Inject(FooService)
+<span class="pl-k">class</span> <span class="pl-en">BarService</span> {
+    <span class="pl-en">constructor</span>(<span class="pl-smi">fooService</span>: <span class="pl-smi">FooService</span>) {
+        <span class="pl-v">this</span>.fooService <span class="pl-k">=</span> fooService;
+    }
+}</pre></div>
+
+<p>Get instance with injected dependencies:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> injector <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Injector</span>();
+<span class="pl-k">var</span> barService<span class="pl-k">:</span> BarService <span class="pl-k">=</span> injector.get(BarService);
+barService.fooService.<span class="pl-c1">constructor</span> <span class="pl-k">===</span> FooService; <span class="pl-c">// true</span></pre></div>
+
+<p>Provide alternative dependencies (for mocking, etc):</p>
+
+<div class="highlight highlight-javascript"><pre>@Provides(FooService)
+<span class="pl-k">class</span> <span class="pl-en">MockFooService</span> {
+    <span class="pl-en">getThings</span>() {
+        <span class="pl-c">// Get some other things</span>
+    }
+}
+
+<span class="pl-k">var</span> injector <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Injector</span>([MockFooService]);
+<span class="pl-k">var</span> barService <span class="pl-k">=</span> injector.get(BarService);
+barService.fooService.<span class="pl-c1">constructor</span> <span class="pl-k">===</span> MockFooService; <span class="pl-c">// true</span></pre></div>
+
+<p>Create a factory for a dependency:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">class</span> <span class="pl-en">FooService</span> {
+    <span class="pl-en">getThings</span>() {
+        <span class="pl-c">// Get some things</span>
+    }
+}
+
+<span class="pl-k">class</span> <span class="pl-en">OtherFooService</span> {
+    <span class="pl-en">getThings</span>() {
+        <span class="pl-c">// Get some other things</span>
+    }
+}
+
+<span class="pl-k">var</span> fooServiceFactory <span class="pl-k">=</span> Factory.create(<span class="pl-k">function</span>() {
+    <span class="pl-k">if</span> (useFoo) {
+        <span class="pl-k">return</span> FooService;
+    } <span class="pl-k">else</span> {
+        <span class="pl-k">return</span> OtherFooService;
+    }
+});
+
+@Inject(fooServiceFactory)
+<span class="pl-k">class</span> <span class="pl-en">Bar</span> {
+    <span class="pl-en">constructor</span>(<span class="pl-smi">fooService</span>: <span class="pl-smi">FooService</span> | <span class="pl-smi">OtherFooService</span>) {
+
+    }
+}
+
+<span class="pl-k">var</span> useFoo <span class="pl-k">=</span> <span class="pl-c1">true</span>;
+<span class="pl-k">var</span> injector <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Injector</span>();
+<span class="pl-k">var</span> bar <span class="pl-k">=</span> injector.get(Bar);
+bar.fooService.contructor <span class="pl-k">===</span> FooService; <span class="pl-c">// true</span></pre></div>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/footballradar/jecht">Jecht</a> is maintained by <a href="https://github.com/footballradar">footballradar</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
