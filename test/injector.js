@@ -1,5 +1,5 @@
 import test from "tape";
-import { Factory, Inject, Injector, Provides } from "../src";
+import { bind, Factory, Inject, Injector, Provides } from "../src";
 
 test("Basic injection", function(t) {
     t.plan(1);
@@ -125,7 +125,7 @@ test("Factory provider", function(t) {
 
     var useFoo = true;
     var injector1 = new Injector();
-    var baz = injector1.get(Baz);
+    injector1.get(Baz);
 
     @Inject(fooFactory)
     class Quux {
@@ -136,6 +136,35 @@ test("Factory provider", function(t) {
 
     useFoo = false;
     var injector2 = new Injector();
-    var quux = injector2.get(Quux);
+    injector2.get(Quux);
+});
 
+test("Custom binding", function(t) {
+    t.plan(2);
+
+    class Foo {
+        name = "Foo";
+    }
+
+    class Bar {
+        name = "Bar";
+    }
+
+    var a = { name: "a" };
+    var b = { name: "b" };
+
+    var injector = new Injector([
+        bind(a).to(Foo),
+        bind(b).to(Bar)
+    ]);
+
+    @Inject(Foo, Bar)
+    class Baz {
+        constructor(foo: Foo, bar: Bar) {
+            t.equal(foo, a);
+            t.equal(bar, b);
+        }
+    }
+
+    injector.get(Baz);
 });

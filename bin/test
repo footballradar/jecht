@@ -5,6 +5,7 @@ var path = require("path");
 
 require("babel/register")({
     optional: [
+        "es7.classProperties",
         "es7.decorators"
     ]
 });
