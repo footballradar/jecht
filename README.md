@@ -12,6 +12,7 @@ Annotate dependencies:
 
 ```javascript
 import {
+    bind,
     Factory,
     Inject,
     Injector,
@@ -38,6 +39,36 @@ Get instance with injected dependencies:
 var injector = new Injector();
 var barService: BarService = injector.get(BarService);
 barService.fooService.constructor === FooService; // true
+```
+
+Bind an arbitrary object to a class or interface:
+
+```javascript
+var fooInstance = {
+    getValue() {
+        return 42;
+    }
+};
+
+class Foo {
+    getValue() {
+        return;
+    }
+}
+
+@Inject(Foo)
+class Bar {
+    constructor(foo: Foo) {
+        this.foo = foo;
+    }
+}
+
+var injector = new Injector([
+    bind(fooInstance).to(Foo)
+]);
+
+var bar: Bar = injector.get(Bar);
+bar.foo.getValue(); // 42
 ```
 
 Provide alternative dependencies (for mocking, etc):

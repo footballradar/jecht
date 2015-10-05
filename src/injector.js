@@ -1,5 +1,7 @@
 /** @flow */
 
+import { Binding } from "./binding";
+
 /**
  * DI Service container.
  *
@@ -44,16 +46,19 @@ export class Injector {
         );
     }
 
-    registerProvider(provider: Function): void {
-        var token = provider.__provides || provider;
-        this.providers.set(token, provider);
+    registerProvider(provider: Binding | Function): void {
+        var token;
+
+        if (provider instanceof Binding) {
+            token = provider.getTarget();
+            this.cache.set(token, provider.getProvider());
+        } else {
+            token = provider.__provides || provider;
+            this.providers.set(token, provider);
+        }
     }
 
     get(token: Function): any {
-        return this.getOrCreate(token);
-    }
-
-    getOrCreate(token: Function): any {
         if (this.cache.has(token)) {
             return this.cache.get(token);
         }
@@ -69,7 +74,7 @@ export class Injector {
         var dependencyTokens = provider.__inject || [];
 
         var dependencies = dependencyTokens.map(
-            (token) => this.getOrCreate(token)
+            (token) => this.get(token)
         );
 
         var instance = new provider(...dependencies);
