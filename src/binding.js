@@ -1,22 +1,22 @@
 export class Binding {
-    getProvider(): any {
+    getProvider(): Function {
         return this.provider;
     }
 
-    setProvider(provider: any): void {
+    setProvider(provider: Function): void {
         this.provider = provider;
     }
 
-    getTarget(): Function {
-        return this.target;
+    getToken(): Function {
+        return this.token;
     }
 
-    setTarget(token: Function): void {
-        this.target = token;
+    setToken(token: any): void {
+        this.token = token;
     }
 
-    to(token: Function): Binding {
-        this.setTarget(token);
+    to(provider: Function): Binding {
+        this.setProvider(provider);
         return this;
     }
 }
@@ -40,14 +40,14 @@ export class Binding {
  *     var fooInstance = { name: "foo", getValue() { ... } };
  *
  *     var injector = new Injector([
- *         bind(fooInstance).to(Foo)
+ *         bind(Foo).to(fooInstance)
  *     ]);
  *
  *     var bar = injector.get(Bar);
  *     bar.foo === fooInstance; // true
  */
-export function bind(provider: any): Binding {
+export function bind(token: any): Binding {
     var binding = new Binding();
-    binding.setProvider(provider);
+    binding.setToken(token);
     return binding;
 }

@@ -154,8 +154,8 @@ test("Custom binding", function(t) {
     var b = { name: "b" };
 
     var injector = new Injector([
-        bind(a).to(Foo),
-        bind(b).to(Bar)
+        bind(Foo).to(a),
+        bind(Bar).to(b)
     ]);
 
     @Inject(Foo, Bar)

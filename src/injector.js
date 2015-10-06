@@ -47,14 +47,10 @@ export class Injector {
     }
 
     registerProvider(provider: Binding | Function): void {
-        var token;
-
         if (provider instanceof Binding) {
-            token = provider.getTarget();
-            this.cache.set(token, provider.getProvider());
+            this.cache.set(provider.getToken(), provider.getProvider());
         } else {
-            token = provider.__provides || provider;
-            this.providers.set(token, provider);
+            this.providers.set(provider.__provides || provider, provider);
         }
     }
 
