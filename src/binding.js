@@ -1,8 +1,8 @@
 const CLASS_PROVIDER = Symbol();
 
 type Provider = {
-    type: Symbol,
-    value: any
+    type: Symbol;
+    value: any;
 }
 
 export class Binding {
