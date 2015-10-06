@@ -166,3 +166,25 @@ test("Custom binding", function(t) {
 
     injector.get(Baz);
 });
+
+test("String binding tokens", function(t) {
+    t.plan(1);
+
+    class Foo {
+        name = "Foo";
+    }
+
+    var injector = new Injector([
+        bind("String_Token").to(Foo)
+    ]);
+
+    @Inject("String_Token")
+    class Baz {
+        constructor(foo: Foo) {
+            t.comment(foo.constructor);
+            t.true(foo instanceof Foo);
+        }
+    }
+
+    injector.get(Baz);
+});
