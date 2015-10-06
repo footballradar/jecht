@@ -1,9 +1,21 @@
+const CLASS_PROVIDER = Symbol();
+
+type Provider = {
+    type: Symbol,
+    value: any
+}
+
 export class Binding {
-    getProvider(): Function {
-        return this.provider;
+    getProvider(): any {
+        switch (this.provider.type) {
+            case CLASS_PROVIDER:
+                return new this.provider.value();
+            default:
+                return this.provider.value;
+        }
     }
 
-    setProvider(provider: Function): void {
+    setProvider(provider: Provider): void {
         this.provider = provider;
     }
 
@@ -16,7 +28,15 @@ export class Binding {
     }
 
     to(provider: Function): Binding {
-        this.setProvider(provider);
+        return this.toClass(provider);
+    }
+
+    toClass(provider: Function): Binding {
+        this.setProvider({
+            type: CLASS_PROVIDER,
+            value: provider
+        });
+
         return this;
     }
 }

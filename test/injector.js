@@ -150,19 +150,17 @@ test("Custom binding", function(t) {
         name = "Bar";
     }
 
-    var a = { name: "a" };
-    var b = { name: "b" };
-
     var injector = new Injector([
-        bind(Foo).to(a),
-        bind(Bar).to(b)
+        bind(Foo).to(Foo),
+        bind(Bar).to(Bar)
     ]);
 
     @Inject(Foo, Bar)
     class Baz {
         constructor(foo: Foo, bar: Bar) {
-            t.equal(foo, a);
-            t.equal(bar, b);
+            t.comment(foo.constructor);
+            t.true(foo instanceof Foo);
+            t.true(bar instanceof Bar);
         }
     }
 
