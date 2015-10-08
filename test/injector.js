@@ -143,26 +143,50 @@ test("Custom binding", function(t) {
     t.plan(2);
 
     class Foo {
+    }
+
+    class OtherFoo {
         name = "Foo";
     }
 
     class Bar {
+    }
+
+    class OtherBar {
         name = "Bar";
     }
 
-    var a = { name: "a" };
-    var b = { name: "b" };
-
     var injector = new Injector([
-        bind(a).to(Foo),
-        bind(b).to(Bar)
+        bind(Foo).to(OtherFoo),
+        bind(Bar).to(OtherBar)
     ]);
 
     @Inject(Foo, Bar)
     class Baz {
         constructor(foo: Foo, bar: Bar) {
-            t.equal(foo, a);
-            t.equal(bar, b);
+            t.true(foo instanceof OtherFoo);
+            t.true(bar instanceof OtherBar);
+        }
+    }
+
+    injector.get(Baz);
+});
+
+test("String binding tokens", function(t) {
+    t.plan(1);
+
+    class Foo {
+        name = "Foo";
+    }
+
+    var injector = new Injector([
+        bind("String_Token").to(Foo)
+    ]);
+
+    @Inject("String_Token")
+    class Baz {
+        constructor(foo: Foo) {
+            t.true(foo instanceof Foo);
         }
     }
 

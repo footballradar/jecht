@@ -41,18 +41,18 @@ var barService: BarService = injector.get(BarService);
 barService.fooService.constructor === FooService; // true
 ```
 
-Bind an arbitrary object to a class or interface:
+Bind an object of a class to an instance of another class:
 
 ```javascript
-var fooInstance = {
-    getValue() {
-        return 42;
-    }
-};
-
 class Foo {
     getValue() {
         return;
+    }
+}
+
+class OtherFoo {
+    getValue() {
+        return 42;
     }
 }
 
@@ -64,7 +64,30 @@ class Bar {
 }
 
 var injector = new Injector([
-    bind(fooInstance).to(Foo)
+    bind(Foo).to(OtherFoo) //
+]);
+
+var bar: Bar = injector.get(Bar);
+bar.foo.getValue(); // 42
+```
+Bind a string token to an instance of a class:
+
+```javascript
+class Foo {
+    getValue() {
+        return 42;
+    }
+}
+
+@Inject("foo")
+class Bar {
+    constructor(foo: Foo) {
+        this.foo = foo;
+    }
+}
+
+var injector = new Injector([
+    bind("foo").to(Foo)
 ]);
 
 var bar: Bar = injector.get(Bar);

@@ -1,22 +1,42 @@
+const CLASS_PROVIDER = Symbol();
+
+type Provider = {
+    type: Symbol;
+    value: any;
+}
+
 export class Binding {
     getProvider(): any {
-        return this.provider;
+        switch (this.provider.type) {
+            case CLASS_PROVIDER:
+                return new this.provider.value();
+            default:
+                return this.provider.value;
+        }
     }
 
-    setProvider(provider: any): void {
+    setProvider(provider: Provider): void {
         this.provider = provider;
     }
 
-    getTarget(): Function {
-        return this.target;
+    getToken(): Function {
+        return this.token;
     }
 
-    setTarget(token: Function): void {
-        this.target = token;
+    setToken(token: any): void {
+        this.token = token;
     }
 
-    to(token: Function): Binding {
-        this.setTarget(token);
+    to(provider: Function): Binding {
+        return this.toClass(provider);
+    }
+
+    toClass(provider: Function): Binding {
+        this.setProvider({
+            type: CLASS_PROVIDER,
+            value: provider
+        });
+
         return this;
     }
 }
@@ -40,14 +60,14 @@ export class Binding {
  *     var fooInstance = { name: "foo", getValue() { ... } };
  *
  *     var injector = new Injector([
- *         bind(fooInstance).to(Foo)
+ *         bind(Foo).to(fooInstance)
  *     ]);
  *
  *     var bar = injector.get(Bar);
  *     bar.foo === fooInstance; // true
  */
-export function bind(provider: any): Binding {
+export function bind(token: any): Binding {
     var binding = new Binding();
-    binding.setProvider(provider);
+    binding.setToken(token);
     return binding;
 }
