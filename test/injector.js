@@ -139,7 +139,7 @@ test("Factory provider", function(t) {
     injector2.get(Quux);
 });
 
-test("Custom binding", function(t) {
+test("toClass binding", function(t) {
     t.plan(2);
 
     class Foo {
@@ -172,7 +172,7 @@ test("Custom binding", function(t) {
     injector.get(Baz);
 });
 
-test("String binding tokens", function(t) {
+test("String toClass binding tokens", function(t) {
     t.plan(1);
 
     class Foo {
@@ -187,6 +187,33 @@ test("String binding tokens", function(t) {
     class Baz {
         constructor(foo: Foo) {
             t.true(foo instanceof Foo);
+        }
+    }
+
+    injector.get(Baz);
+});
+
+test("toValue binding", function(t) {
+    t.plan(2);
+
+    var foo = { };
+
+    var otherFoo = {
+        name: "otherFoo"
+    };
+
+    class Bar { }
+
+    var injector = new Injector([
+        bind(foo).toValue(otherFoo),
+        bind(Bar).toValue("string literal")
+    ]);
+
+    @Inject(foo, Bar)
+    class Baz {
+        constructor(foo: Object, bar: String) {
+            t.equal(foo, otherFoo);
+            t.equal(bar, "string literal");
         }
     }
 
