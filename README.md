@@ -1,5 +1,7 @@
 # Jecht - Simple DI
 
+![https://travis-ci.org/footballradar/jecht](https://travis-ci.org/footballradar/jecht.svg)
+
 _A basic dependency injection library for modern JS._
 
 ## Quickstart
