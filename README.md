@@ -107,7 +107,7 @@ class Bar {
 }
 
 var injector = new Injector([
-    bind(Foo).to("string literal")
+    bind(Foo).toValue("string literal")
 ]);
 
 var bar: Bar = injector.get(Bar);
