@@ -1,4 +1,5 @@
 const CLASS_PROVIDER = Symbol();
+const VALUE_PROVIDER  = Symbol();
 
 type Provider = {
     type: Symbol;
@@ -39,6 +40,17 @@ export class Binding {
 
         return this;
     }
+
+    toValue(provider: any): Binding {
+        this.setProvider({
+            type: VALUE_PROVIDER,
+            value: provider
+        });
+
+        return this;
+    }
+
+
 }
 
 /**

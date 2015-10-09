@@ -94,6 +94,26 @@ var bar: Bar = injector.get(Bar);
 bar.foo.getValue(); // 42
 ```
 
+Bind to a simple value:
+
+```javascript
+class Foo { }
+
+@Inject(Foo)
+class Bar {
+    constructor(foo: String) {
+        this.foo = foo;
+    }
+}
+
+var injector = new Injector([
+    bind(Foo).to("string literal")
+]);
+
+var bar: Bar = injector.get(Bar);
+bar.foo === "string literal";
+```
+
 Provide alternative dependencies (for mocking, etc):
 
 ```javascript
